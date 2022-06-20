@@ -16,10 +16,14 @@ public class Queue {
         queue.in(3);
         queue.in(3);
         queue.in(3);
-//        queue.in(3);
-        queue.out();
 
-        System.out.println(queue.getSize());
+        queue.out();
+        queue.in(3);
+        System.out.println(queue.pre);
+        System.out.println(queue.next);
+
+
+//        System.out.println(queue.getSize());
     }
 
     int next;
@@ -36,45 +40,42 @@ public class Queue {
         this.elem=new int[this.limit];
     }
 
-
-
-    public int getNextIndex(int i){
-        return i<this.limit-1?i:0;
+    public Integer out(){
+        int x=elem[pre];
+        size--;
+        pre=getNextIndex(pre);
+        return x;
     }
 
-    public boolean isEmpty(){
-        return this.size==0;
+    public int getSize(){
+        return size;
+    }
+
+
+
+
+    public void in(int x){
+        if(isFull()){
+            throw new RuntimeException("队列已经满了");
+        }
+
+        elem[next]=x;
+        next=getNextIndex(next);
+        size++;
     }
 
     public boolean isFull(){
-        return this.size==this.limit;
+        return size==limit;
+    }
+
+    public boolean isEmpty(){
+        return size==0;
     }
 
 
-    public int getSize(){
-        return this.size;
+    public int getNextIndex(int index){
+        return index<limit-1?index+1:0;
     }
 
-    //入队
-    public void in(int o){
-        if(!isFull()){
-            elem[getNextIndex(this.next)]=o;
-            size++;
 
-        }else{
-            throw new RuntimeException("队列已经满了");
-        }
-    }
-
-    //出队
-    public int out(){
-        if(!isEmpty()){
-            size--;
-            int ele=elem[this.pre];
-            this.pre=getNextIndex(this.pre);
-            return ele;
-        }else{
-            throw new RuntimeException("队列已经空了");
-        }
-    }
 }
